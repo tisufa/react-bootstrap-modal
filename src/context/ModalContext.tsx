@@ -7,7 +7,7 @@ import type {
 } from "../types/modal.js";
 const ModalContext = createContext<ModalProps>({} as any);
 const ModalProvider = ({ children }: any) => {
-  const ref = useRef<any>(null);
+  const ref = useRef<ModalProps>({} as any);
   const open = (
     component: JSX.Element | (() => JSX.Element),
     model?: any,
@@ -27,7 +27,7 @@ const ModalProvider = ({ children }: any) => {
   return (
     <ModalContext.Provider value={{ open, close: handleClose, dismissAll }}>
       {children}
-      <Modal innerRef={ref} />
+      <Modal ref={ref} />
     </ModalContext.Provider>
   );
 };

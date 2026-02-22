@@ -1,20 +1,29 @@
-import { useEffect, useImperativeHandle, useState } from "react";
-import type { ModalComponentType, ModalOptionsProps } from "../types/modal.js";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
+import type {
+  ModalComponentType,
+  ModalOptionsProps,
+  ModalProps,
+} from "../types/modal.js";
 import { ModalItem } from "./ModalItem.js";
-import "./modal.css";
 
 interface ModalItemProps {
   component: ModalComponentType;
   model: any;
-  options: ModalOptionsProps;
+  options?: ModalOptionsProps;
   id: string;
   resolve: (value: any) => void;
+  ref?: React.RefObject<any>;
 }
 
-const Modal = ({ innerRef }: any) => {
-  useImperativeHandle(innerRef, () => ({
+const Modal = forwardRef<ModalProps, any>((_, ref) => {
+  useImperativeHandle(ref, () => ({
     open: open,
-    close: handleClose,
+    close: closeLast,
     dismissAll,
   }));
   const [modals, setModals] = useState<ModalItemProps[]>([]);
@@ -28,11 +37,12 @@ const Modal = ({ innerRef }: any) => {
   const open = (
     component: ModalComponentType,
     model: any,
-    options: ModalOptionsProps,
+    options?: ModalOptionsProps,
   ) => {
     return new Promise((resolve) => {
       const id = crypto.randomUUID();
-      const modal = { component, model, resolve, options, id };
+      const ref = React.createRef();
+      const modal = { component, model, resolve, options, id, ref };
       setModals((prev) => [...prev, modal]);
     });
   };
@@ -44,6 +54,12 @@ const Modal = ({ innerRef }: any) => {
     }, 200);
   };
 
+  const closeLast = () => {
+    if (!modals.length) return;
+    const lastModal = modals[modals.length - 1];
+    lastModal.ref?.current?.close?.();
+  };
+
   const handleClose = (modal: ModalItemProps) => {
     setTimeout(() => {
       setModals((prev) => prev.filter((m) => m.id !== modal.id));
@@ -51,13 +67,14 @@ const Modal = ({ innerRef }: any) => {
   };
 
   const dismissAll = () => {
-    modals.forEach((modal) => modal.resolve(null));
-    setModals([]);
+    modals.forEach((modal) => {
+      modal.ref?.current?.close();
+    });
   };
 
   return (
     <>
-      {modals.map((modal, index) => (
+      {modals.map((modal) => (
         <ModalItem
           key={modal.id}
           model={modal.model}
@@ -65,10 +82,11 @@ const Modal = ({ innerRef }: any) => {
           component={modal.component}
           onClose={() => handleClose(modal)}
           onChange={(result) => handleChange(result, modal)}
+          ref={modal.ref}
         />
       ))}
     </>
   );
-};
+});
 
 export { Modal };

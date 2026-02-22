@@ -18,7 +18,6 @@ export interface ActiveModalProps {
 }
 
 export type ModalComponentType = JSX.Element | ((...args: any) => JSX.Element);
-
 export interface ModalProps extends ActiveModalProps {
   open: (
     component: ModalComponentType,

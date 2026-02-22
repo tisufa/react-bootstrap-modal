@@ -182,11 +182,40 @@ export const AddUserModal = ({ onChange }: { onChange: (result: any) => void }) 
 
 > This approach is ideal for reusable modal components that need to self-manage close actions.This approach is ideal for reusable modal components that need to self-manage close actions.
 
-#### 4. Props and Types
+#### 4. Shaking Animation for Static Modals
 
-Below is a summary of modal props and types you can use:
+To provide visual feedback when a user clicks the backdrop of a static modal (where clicking outside does not close it), you can add a custom animation to your global CSS file.
 
-##### 1. Modal Props
+The library automatically applies the .modal-static-shake class when a static backdrop is clicked.
+
+```css
+.modal-static-shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: translateY(1px);
+  }
+}
+```
+
+**Note:** The CSS above is just a reference for the default behavior. You can override the .modal-static-shake class with any custom transition or animation you prefer.
+
+## API Reference
+
+This section provides detailed information about the props and configuration options available for the Modal system.
+
+#### 1. The `useModal` Hook
+
+The `useModal` hook returns an object containing methods to control the modal stack programmatically.
 
 | Prop           | Type                                                                                        | Description                                              |
 | -------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
@@ -194,7 +223,9 @@ Below is a summary of modal props and types you can use:
 | `close`        | `() => void  `                                                                              | Close current active modal                               |
 | `dismissAll()` | `() => void `                                                                               | Close all active modals.                                 |
 
-##### 2. Modal Open Props
+#### 2. Open Parameters
+
+When calling m`odal.open()`, you can pass the following arguments to define what to render and how it behaves.
 
 | Prop      | Type                                             | Description                                                                                                    |
 | --------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
@@ -202,7 +233,9 @@ Below is a summary of modal props and types you can use:
 | model     | `any`                                            | Optional data passed to the modal component as props. Useful for pre-filling forms or passing contextual info. |
 | options   | `ModalOptionsProps`                              | Optional modal configuration (size, backdrop, centered, scrollable, fullscreen, custom class).                 |
 
-##### 3. Modal Options Props
+#### 3. Modal Options (options)
+
+The `options` object is the third argument of the `open()` method. It allows you to customize the behavior and appearance of each specific modal instance.
 
 | Prop           | Type                           | Default | Description                                                              |
 | -------------- | ------------------------------ | ------- | ------------------------------------------------------------------------ |
@@ -213,7 +246,9 @@ Below is a summary of modal props and types you can use:
 | scrollable     | `boolean`                      | false   | Enable scrolling within modal body.                                      |
 | modalClassName | `string`                       | ""      | Add custom CSS class to the modal container                              |
 
-##### 4. Active Modal Props
+#### 4. The `useActiveModal` Hook
+
+This hook is intended for use inside the component being rendered as a modal (the child component). It provides access to the current modal instance's controls.
 
 | Prop       | Type         | Description                    |
 | ---------- | ------------ | ------------------------------ |
