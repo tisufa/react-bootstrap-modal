@@ -1,7 +1,7 @@
 {
   "name": "@sentuh/react-bootstrap-modal",
   "version": "0.1.1",
-  "description": "Reusable React Bootstrap Modal component for React projects",
+  "description": "Lightweight and customizable React modal component styled with Bootstrap 5.",
   "type": "module",
   "private": false,
   "license": "MIT",
@@ -51,11 +51,13 @@
   },
   "keywords": [
     "react",
+    "react-modal",
     "modal",
     "bootstrap",
-    "react-component",
-    "ui",
-    "dialog"
+    "bootstrap-modal",
+    "dialog",
+    "react-bootstrap-modal",
+    "popup"
   ],
   "repository": {
     "type": "git",

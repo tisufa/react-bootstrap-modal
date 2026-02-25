@@ -97,7 +97,7 @@ export const AddUserModal = ({ onClose, onChange }: Props) => {
 };
 ```
 
-> Note: In this approach, useModal.open() will internally create and manage the modal instance.
+**Note**: In this approach, `useModal.open()` will internally create and manage the modal instance.
 
 You can pass dynamic data to your modal using the `model` argument:
 
@@ -140,9 +140,9 @@ function App() {
 }
 ```
 
-> Difference from Method 1:
-> In this approach, you pass a JSX element instead of the component reference. This is convenient for quick, one-off modals with inline props, but it is less reusable.
-> ⚠️ Important: When using this approach, you need to implement useActiveModal inside your modal component to manually control closing or other modal actions. See Point 3 – Advanced Usage with useActiveModal for implementation examples.
+**Difference from Method 1**: In this approach, you pass a JSX element instead of the component reference. This is convenient for quick, one-off modals with inline props, but it is less reusable.
+
+⚠️ **Important**: When using this approach, you need to implement useActiveModal inside your modal component to manually control closing or other modal actions. See Point 3 – Advanced Usage with useActiveModal for implementation examples.
 
 #### 3. Advanced Usage with useActiveModal
 
@@ -190,7 +190,7 @@ The library automatically applies the .modal-static-shake class when a static ba
 
 ```css
 .modal-static-shake {
-  animation: shake 0.3s;
+  animation: shake 0.3s ease-in-out;
 }
 
 @keyframes shake {
@@ -199,15 +199,12 @@ The library automatically applies the .modal-static-shake class when a static ba
     transform: scale(1);
   }
   50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: translateY(1px);
+    transform: scale(1.02);
   }
 }
 ```
 
-**Note:** The CSS above is just a reference for the default behavior. You can override the .modal-static-shake class with any custom transition or animation you prefer.
+**Note:** The CSS above is just a reference for the default behavior. You can override the `.modal-static-shake` class with any custom transition or animation you prefer.
 
 ## API Reference
 
