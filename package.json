@@ -1,6 +1,6 @@
 {
   "name": "@sentuh/react-bootstrap-modal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight and customizable React modal component styled with Bootstrap 5.",
   "type": "module",
   "private": false,
