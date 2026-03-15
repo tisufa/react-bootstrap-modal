@@ -13,9 +13,9 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/react-bootstrap-modal.es.js",
-      "require": "./dist/react-bootstrap-modal.umd.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/react-bootstrap-modal.umd.js"
     }
   },
   "sideEffects": false,

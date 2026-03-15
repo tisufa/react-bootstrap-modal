@@ -49,16 +49,15 @@ There are two main ways to open a modal:
 
 ```typescript
 import { useModal } from "@sentuh/react-bootstrap-modal";
-import { AddUserModal } from "./AddUserModal";
+import { ExampleModal } from "./ExampleModal";
 
 function App() {
   const modal = useModal();
 
   const handleOpen = () => {
     // Pass the component itself, modal will render it internally
-    modal.open(AddUserModal).then((result) => {
-      console.log(result);
-    });
+    const result = await modal.open(ExampleModal);
+    console.log(result);
   };
 
   return (
@@ -69,28 +68,29 @@ function App() {
 }
 ```
 
-AddUserModal Example:
+ExampleModal Example:
 
 ```typescript
-interface Props {
-  onClose: () => void;
-  onChange: (result: any) => void;
-}
+import type { ModalProps } from "@sentuh/react-bootstrap-modal";
 
-export const AddUserModal = ({ onClose, onChange }: Props) => {
-  const handleChange = () => onChange({ id: 1, name: "John Doe Updated" });
+interface Props extends ModalProps {}
 
+export const ExampleModal = ({ onClose, onDismiss }: Props) => {
   return (
     <>
       <div className="modal-header">
-        <h4>Add User</h4>
+        <h4>Example Modal Header</h4>
       </div>
       <div className="modal-body">
-        <p>This is a reusable modal component.</p>
+        <p>This is an example reusable modal component.</p>
       </div>
       <div className="modal-footer">
-        <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
-        <button className="btn btn-primary" onClick={handleChange}>Save</button>
+        <button className="btn btn-secondary" onClick={onDismiss}>
+          Cancel
+        </button>
+        <button className="btn btn-primary" onClick={onClose}>
+          Save
+        </button>
       </div>
     </>
   );
@@ -102,17 +102,56 @@ export const AddUserModal = ({ onClose, onChange }: Props) => {
 You can pass dynamic data to your modal using the `model` argument:
 
 ```typescript
-modal.open(AddUserModal, { id: 1, name: "Jane Doe" });
+const model = { id: 1, name: "Jane Doe" };
+const result = await modal.open(ExampleModal, model);
+console.log(result); // { name: 'John Doe'}
 ```
 
-Inside `AddUserModal`, access the passed data via the `model` prop:
+Inside `ExampleModal`, access the passed data via the `model` prop:
 
 ```typescript
-export const AddUserModal = ({ onClose, onChange, model }: Props) => {
+import type { ModalProps } from "@sentuh/react-bootstrap-modal";
+import { useEffect } from "react";
+
+interface InputProps {
+  id: string;
+  name: string;
+}
+
+interface OutputProps {
+  name: string;
+}
+
+interface Props extends ModalProps<InputProps, OutputProps> {}
+
+export const ExampleModal = ({ onClose, onDismiss, model }: Props) => {
   useEffect(() => {
-    console.log(model); // output: { id: 1, name: 'Jane Doe'}
-  }, [])
-  return <>...</>
+    console.log(model); // input: { id: 1, name: 'Jane Doe'}
+  }, []);
+
+  const handleSave = () => {
+    // return output to parent
+    onClose({ name: "John Doe" });
+  };
+
+  return (
+    <>
+      <div className="modal-header">
+        <h4>Example Modal Header</h4>
+      </div>
+      <div className="modal-body">
+        <p>This is an example reusable modal component.</p>
+      </div>
+      <div className="modal-footer">
+        <button className="btn btn-secondary" onClick={onDismiss}>
+          Cancel
+        </button>
+        <button className="btn btn-primary" onClick={handleSave}>
+          Save
+        </button>
+      </div>
+    </>
+  );
 };
 ```
 
@@ -125,11 +164,13 @@ import { AddUserModal } from "./AddUserModal";
 function App() {
   const modal = useModal();
 
-  const handleChange = (result: any) => console.log(result);
+  const handleChange = (result: { name: string }) => {
+    console.log(result); // output: { name: 'John Doe' }
+  }
 
   const handleOpen = () => {
     // Pass the JSX element directly
-    modal.open(<AddUserModal onChange={handleChange} />);
+    modal.open(<AddUserModal onChange={handleChange}/>);
   };
 
   return (
@@ -150,37 +191,41 @@ function App() {
 
 ```typescript
 import { useActiveModal } from "@sentuh/react-bootstrap-modal";
-import { Modal } from "./Modal";
 
-export const AddUserModal = ({ onChange }: { onChange: (result: any) => void }) => {
+interface Props {
+  onChange: (result: { name: string }) => void;
+}
+
+export const ExampleModal = ({ onChange }: Props) => {
   const activeModal = useActiveModal();
 
   const handleSave = () => {
-    onChange({ id: 1, name: "John Doe Updated" });
-    activeModal.close();
+    activeModal.dismiss();
+    onChange({ name: "John Doe" });
   };
 
   return (
-    <Modal
-      header="Add User"
-      footer={() => (
-        <>
-          <button className="btn btn-secondary" onClick={() => activeModal.close()}>
-            Cancel
-          </button>
-          <button className="btn btn-primary" onClick={handleSave}>
-            Save
-          </button>
-        </>
-      )}
-    >
-      <p>Welcome to the Add User modal</p>
-    </Modal>
+    <>
+      <div className="modal-header">
+        <h4>Example Modal Header</h4>
+      </div>
+      <div className="modal-body">
+        <p>This is an example reusable modal component.</p>
+      </div>
+      <div className="modal-footer">
+        <button className="btn btn-secondary" onClick={activeModal.dismiss}>
+          Cancel
+        </button>
+        <button className="btn btn-primary" onClick={handleSave}>
+          Save
+        </button>
+      </div>
+    </>
   );
 };
 ```
 
-> This approach is ideal for reusable modal components that need to self-manage close actions.This approach is ideal for reusable modal components that need to self-manage close actions.
+> This approach is ideal for reusable modal components that need to self-manage close actions.
 
 #### 4. Shaking Animation for Static Modals
 
@@ -217,12 +262,12 @@ The `useModal` hook returns an object containing methods to control the modal st
 | Prop           | Type                                                                                        | Description                                              |
 | -------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `open`         | `(component: ModalComponentType, model?: any, options?: ModalOptionsProps) => Promise<any>` | Opens a modal. Resolves with data passed from the modal. |
-| `close`        | `() => void  `                                                                              | Close current active modal                               |
+| `close`        | `(result?: any) => void`                                                                    | Close current active modal                               |
 | `dismissAll()` | `() => void `                                                                               | Close all active modals.                                 |
 
 #### 2. Open Parameters
 
-When calling m`odal.open()`, you can pass the following arguments to define what to render and how it behaves.
+When calling `modal.open()`, you can pass the following arguments to define what to render and how it behaves.
 
 | Prop      | Type                                             | Description                                                                                                    |
 | --------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
@@ -245,8 +290,9 @@ The `options` object is the third argument of the `open()` method. It allows you
 
 #### 4. The `useActiveModal` Hook
 
-This hook is intended for use inside the component being rendered as a modal (the child component). It provides access to the current modal instance's controls.
+This hook is intended for use inside the component being rendered as a modal (the child component). It provides access to the current modal instance's lifecycle controls.
 
-| Prop       | Type         | Description                    |
-| ---------- | ------------ | ------------------------------ |
-| `close() ` | `() => void` | Close the current active modal |
+| Prop         | Type                     | Description                                                                                                  |
+| ------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `close() `   | `(result?: any) => void` | Closes the modal and returns a success result to the caller. Use this for "Submit," "Save," or "OK" actions. |
+| `dismiss() ` | `() => void`             | Closes the modal without a result, typically triggering a cancel or rejection. Use this for "Cancel" buttons |

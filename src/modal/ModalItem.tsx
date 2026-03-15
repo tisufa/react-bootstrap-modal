@@ -10,20 +10,20 @@ import { ActiveModalProvider } from "../context/ModalContext.js";
 import type { ModalComponentType, ModalOptionsProps } from "../types/modal.js";
 
 interface Props {
-  onClose: () => void;
-  onChange: (value: any) => void;
+  onDismiss: () => void;
+  onClose: (value: any) => void;
   component: ModalComponentType;
   model: any;
   options?: ModalOptionsProps;
 }
 
 interface RefProps {
-  close: () => void;
+  close: (result?: any) => void;
 }
 
 export const ModalItem = forwardRef<RefProps, Props>(
   (
-    { onClose, onChange, component: Component, model, options = {} }: Props,
+    { onDismiss, onClose, component: Component, model, options = {} }: Props,
     ref,
   ): JSX.Element => {
     const [isShow, setIsShow] = useState(false);
@@ -41,7 +41,7 @@ export const ModalItem = forwardRef<RefProps, Props>(
     useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (options.keyboard && e.key === "Escape") {
-          closeDialog();
+          dismissDialog();
         }
       };
 
@@ -60,27 +60,31 @@ export const ModalItem = forwardRef<RefProps, Props>(
         .join(" ");
     }, []);
 
-    const handleChange = (result: any) => {
+    const handleClose = (result?: any) => {
+      closeDialog(result);
+    };
+
+    const closeDialog = (result?: any) => {
       setIsShow(false);
-      onChange(result);
+      onClose(result);
     };
 
-    const handleClose = () => {
-      closeDialog();
+    const handleDismiss = () => {
+      dismissDialog();
     };
 
-    const handleCloseFromBackdrop = () => {
+    const handleDismissFromBackdrop = () => {
       if (options?.backdrop === "static") {
         setShake(true);
         setTimeout(() => setShake(false), 300);
         return;
       }
-      closeDialog();
+      dismissDialog();
     };
 
-    const closeDialog = () => {
+    const dismissDialog = () => {
       setIsShow(false);
-      onClose();
+      onDismiss();
     };
 
     return (
@@ -88,24 +92,27 @@ export const ModalItem = forwardRef<RefProps, Props>(
         {options?.backdrop !== false && (
           <div
             className={`modal-backdrop fade ${isShow ? "show" : ""}`}
-            onClick={handleCloseFromBackdrop}
+            onClick={handleDismissFromBackdrop}
           />
         )}
         <div
           className={`modal fade ${isShow ? "show d-block" : "d-block"}`}
-          onClick={handleCloseFromBackdrop}
+          onClick={handleDismissFromBackdrop}
         >
           <div
             className={`modal-dialog ${className} ${shake ? "modal-static-shake" : ""}`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-content">
-              <ActiveModalProvider onClose={handleClose}>
+              <ActiveModalProvider
+                onClose={handleClose}
+                onDismiss={handleDismiss}
+              >
                 {typeof Component === "function" ? (
                   <Component
                     model={model}
+                    onDismiss={handleDismiss}
                     onClose={handleClose}
-                    onChange={handleChange}
                   />
                 ) : (
                   <>{Component}</>

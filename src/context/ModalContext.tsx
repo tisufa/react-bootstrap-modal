@@ -2,12 +2,12 @@ import { createContext, useContext, useRef, type JSX } from "react";
 import { Modal } from "../modal/Modal.js";
 import type {
   ActiveModalProps,
+  ModalContextValue,
   ModalOptionsProps,
-  ModalProps,
 } from "../types/modal.js";
-const ModalContext = createContext<ModalProps>({} as any);
+const ModalContext = createContext<ModalContextValue>({} as any);
 const ModalProvider = ({ children }: any) => {
-  const ref = useRef<ModalProps>({} as any);
+  const ref = useRef<ModalContextValue>({} as any);
   const open = (
     component: JSX.Element | (() => JSX.Element),
     model?: any,
@@ -16,8 +16,8 @@ const ModalProvider = ({ children }: any) => {
     return ref.current.open(component, model, options);
   };
 
-  const handleClose = (): void => {
-    ref.current.close();
+  const handleClose = (result?: any): void => {
+    ref.current.close(result);
   };
 
   const dismissAll = (): void => {
@@ -34,15 +34,15 @@ const ModalProvider = ({ children }: any) => {
 
 const ActiveModalContext = createContext<ActiveModalProps>({} as any);
 
-const ActiveModalProvider = ({ children, onClose }: any) => {
+const ActiveModalProvider = ({ children, onClose, onDismiss }: any) => {
   return (
-    <ActiveModalContext.Provider value={{ close: onClose }}>
+    <ActiveModalContext.Provider value={{ close: onClose, dismiss: onDismiss }}>
       {children}
     </ActiveModalContext.Provider>
   );
 };
 
-const useModal = (): ModalProps => {
+const useModal = (): ModalContextValue => {
   const context = useContext(ModalContext);
   if (context) return context;
   throw new Error("useModal must be used within a ModalProvider");
