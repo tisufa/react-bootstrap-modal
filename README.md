@@ -159,7 +159,7 @@ export const ExampleModal = ({ onClose, onDismiss, model }: Props) => {
 
 ```typescript
 import { useModal } from "@sentuh/react-bootstrap-modal";
-import { AddUserModal } from "./AddUserModal";
+import { ExampleModal } from "./ExampleModal";
 
 function App() {
   const modal = useModal();
@@ -170,7 +170,7 @@ function App() {
 
   const handleOpen = () => {
     // Pass the JSX element directly
-    modal.open(<AddUserModal onChange={handleChange}/>);
+    modal.open(<ExampleModal onChange={handleChange}/>);
   };
 
   return (
