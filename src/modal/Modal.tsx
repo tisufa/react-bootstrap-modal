@@ -76,7 +76,7 @@ const Modal = forwardRef<ModalContextValue, any>((_, ref) => {
 
   const dismissAll = () => {
     modals.forEach((modal) => {
-      modal.ref?.current?.close();
+      modal.ref?.current?.dismiss();
     });
   };
 
