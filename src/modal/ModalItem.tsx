@@ -7,13 +7,14 @@ import {
   type JSX,
 } from "react";
 import { ActiveModalProvider } from "../context/ModalContext.js";
-import type { ModalComponentType, ModalOptionsProps } from "../types/modal.js";
+import type {
+  ModalComponentType,
+  ModalOptionsProps,
+  ModalProps,
+} from "../types/modal.js";
 
-interface Props {
-  onDismiss: () => void;
-  onClose: (value: any) => void;
+interface Props extends ModalProps {
   component: ModalComponentType;
-  model: any;
   options?: ModalOptionsProps;
 }
 
@@ -31,6 +32,7 @@ export const ModalItem = forwardRef<RefProps, Props>(
 
     useImperativeHandle(ref, () => ({
       close: closeDialog,
+      dismiss: dismissDialog,
     }));
 
     useEffect(() => {
