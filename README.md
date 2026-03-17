@@ -45,7 +45,7 @@ There are two main ways to open a modal:
 1. Passing the component class/function (recommended for reusability and automatic props handling)
 2. Passing a JSX element directly (for quick one-off modals)
 
-##### Method 1 — Passing Component
+##### Method 1: Passing a Component (Recommended)
 
 ```typescript
 import { useModal } from "@sentuh/react-bootstrap-modal";
