@@ -13,7 +13,7 @@ export interface ModalOptionsProps {
   modalClassName?: string;
 }
 
-export interface ActiveModalProps {
+export interface ActiveModalContextValue {
   dismiss: () => void;
   close: (result?: any) => void;
 }
@@ -30,6 +30,6 @@ export interface ModalContextValue {
 }
 export interface ModalProps<TModel = unknown, TResult = unknown> {
   model: TModel;
-  onClose: (result: TResult) => void;
+  onClose: (result?: TResult) => void;
   onDismiss: () => void;
 }
