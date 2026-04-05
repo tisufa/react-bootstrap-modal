@@ -7,7 +7,7 @@ Lightweight React modal component built on Bootstrap 5, easy to use, supporting:
 - ModalProvider for centralized state management
 - `useModal` and `useActiveModal` hooks for flexible modal control
 
-# 🛠 Requirements & Installation
+## Requirements & Installation
 
 This library is a collection of React components built on top of Bootstrap 5. To ensure stability and compatibility, please ensure your project meets the following requirements.
 
