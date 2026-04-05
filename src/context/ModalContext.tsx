@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, type JSX } from "react";
+import { createContext, ReactElement, useContext, useRef } from "react";
 import { Modal } from "../modal/Modal.js";
 import type {
   ActiveModalContextValue,
@@ -9,7 +9,7 @@ const ModalContext = createContext<ModalContextValue>({} as any);
 const ModalProvider = ({ children }: any) => {
   const ref = useRef<ModalContextValue>({} as any);
   const open = (
-    component: JSX.Element | (() => JSX.Element),
+    component: ReactElement | (() => ReactElement),
     model?: any,
     options?: ModalOptionsProps,
   ): Promise<any> => {

@@ -4,7 +4,6 @@ import {
   useImperativeHandle,
   useMemo,
   useState,
-  type JSX,
 } from "react";
 import { ActiveModalProvider } from "../context/ModalContext.js";
 import type {
@@ -26,7 +25,7 @@ export const ModalItem = forwardRef<RefProps, Props>(
   (
     { onDismiss, onClose, component: Component, model, options = {} }: Props,
     ref,
-  ): JSX.Element => {
+  ) => {
     const [isShow, setIsShow] = useState(false);
     const [shake, setShake] = useState(false);
 

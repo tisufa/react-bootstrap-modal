@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-04-05
+
+### Changed
+
+- **Type Safety**: Updated component type from `JSX.Element` to `ReactElement` for better compatibility across React versions.
+- **Compatibility:** Improved support for React 16–18 by removing reliance on React 18-specific JSX type imports.
+- **API Strictness:** Modal `component` now enforces valid React elements instead of generic JSX output, ensuring safer internal handling (e.g., element manipulation).
+
+### Docs
+
+- **Requirements Update:** Updated the **Requirements** & **Installation** section to explicitly list Peer Dependencies (React >=16.8 and Bootstrap 5) and clarified CSS import steps.
+- Updated documentation to reflect new `ReactElement` typing: `ReactElement | ((props: any) => ReactElement)`
+- Clarified usage examples for modal component inputs.
+
 ## [1.0.2] - 2026-03-17
 
 ### Added

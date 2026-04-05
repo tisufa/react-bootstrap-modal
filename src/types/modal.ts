@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import type { ReactElement } from "react";
 
 export type ModalSize = "sm" | "lg" | "xl" | "fullscreen";
 
@@ -18,7 +18,9 @@ export interface ActiveModalContextValue {
   close: (result?: any) => void;
 }
 
-export type ModalComponentType = JSX.Element | ((...args: any) => JSX.Element);
+export type ModalComponentType =
+  | ReactElement
+  | ((...args: any) => ReactElement);
 export interface ModalContextValue {
   open: (
     component: ModalComponentType,

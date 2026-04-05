@@ -7,10 +7,34 @@ Lightweight React modal component built on Bootstrap 5, easy to use, supporting:
 - ModalProvider for centralized state management
 - `useModal` and `useActiveModal` hooks for flexible modal control
 
-## Installation
+# 🛠 Requirements & Installation
+
+This library is a collection of React components built on top of Bootstrap 5. To ensure stability and compatibility, please ensure your project meets the following requirements.
+
+### Peer Dependencies
+
+These packages must be installed in your project. The library expects them to be available to avoid version conflicts and bundle bloat.
+
+| Package   | Version    |
+| --------- | ---------- |
+| React     | `>=16.8.0` |
+| React DOM | `>=16.8.0` |
+| Bootstrap | `^5.0.0`   |
+
+#### 1. Installation
+
+Install the library via npm (or your preferred package manager):
 
 ```bash
 npm install @sentuh/react-bootstrap-modal
+```
+
+#### 2. Setup Bootstrap
+
+Since this library relies on Bootstrap styles, you must ensure the CSS is imported in your application's entry point (e.g., `src/main.tsx` or `src/App.js`):
+
+```css
+import "bootstrap/dist/css/bootstrap.min.css";
 ```
 
 ## Demo (live preview)
@@ -269,11 +293,11 @@ The `useModal` hook returns an object containing methods to control the modal st
 
 When calling `modal.open()`, you can pass the following arguments to define what to render and how it behaves.
 
-| Prop      | Type                                             | Description                                                                                                    |
-| --------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| component | `JSX.Element` or `((props: any) => JSX.Element)` | The modal component to render. Can be a JSX element or a component function.                                   |
-| model     | `any`                                            | Optional data passed to the modal component as props. Useful for pre-filling forms or passing contextual info. |
-| options   | `ModalOptionsProps`                              | Optional modal configuration (size, backdrop, centered, scrollable, fullscreen, custom class).                 |
+| Prop      | Type                                               | Description                                                                                                    |
+| --------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| component | `ReactElement` or `((props: any) => ReactElement)` | The modal component to render. Can be a React element or a component function.                                 |
+| model     | `any`                                              | Optional data passed to the modal component as props. Useful for pre-filling forms or passing contextual info. |
+| options   | `ModalOptionsProps`                                | Optional modal configuration (size, backdrop, centered, scrollable, fullscreen, custom class).                 |
 
 #### 3. Modal Options (options)
 
